@@ -1,0 +1,16 @@
+/**
+ * 需求：最大团问题
+ * @author lwp940118
+ *	李文朋
+ */
+public class ZuiDaTuan {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

@@ -1,0 +1,88 @@
+package com.xyliwp.yicunyipin.fragment;
+
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+
+import com.xyliwp.yicunyipin.R;
+
+public class Fragment_home extends Fragment implements OnClickListener{
+
+	private View rootView;
+	
+	private ViewPager viewPager_guanggao;
+	private Button button_back;
+	private ListView listView_xinxi;
+	private LinearLayout linearLayout_yuanquan;
+	private Myadepter myadepter;
+	
+	private String[] string_name = new String[]{
+		"¶şÂ¥·¹ÌÃ","ÈıÂ¥·¹ÌÃ","ÈıÂ¥·¹ÌÃ","ÈıÂ¥·¹ÌÃ","ÈıÂ¥·¹ÌÃ","ÈıÂ¥·¹ÌÃ","ÈıÂ¥·¹ÌÃ","ÈıÂ¥·¹ÌÃ",
+		"ÈıÂ¥·¹ÌÃ","ÈıÂ¥·¹ÌÃ","ÈıÂ¥·¹ÌÃ","ÈıÂ¥·¹ÌÃ","ÈıÂ¥·¹ÌÃ"
+	};
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		
+		rootView = inflater.inflate(R.layout.fragment_home, container,false);
+		
+		findviewId();
+		
+		return rootView;
+	}
+	
+	private void findviewId(){
+		viewPager_guanggao = (ViewPager)rootView.findViewById(R.id.viewpage_guanggao);
+		listView_xinxi = (ListView)rootView.findViewById(R.id.listview_xinxi);
+		button_back = (Button)rootView.findViewById(R.id.button_fanhui);
+		linearLayout_yuanquan = (LinearLayout)rootView.findViewById(R.id.linearlayout_yuanqun);
+	}
+
+	@Override
+	public void onClick(View e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	class Myadepter extends BaseAdapter{
+		
+		LayoutInflater inflater;
+
+		@Override
+		public int getCount() {
+			// TODO Auto-generated method stub
+			return string_name.length;
+		}
+
+		@Override
+		public Object getItem(int arg0) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public long getItemId(int arg0) {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+		//Ğ´¶ÔÓ¦ÊÂ¼şµÄ¼àÌıÊÂ¼ş
+		@Override
+		public View getView(int arg0, View arg1, ViewGroup arg2) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		
+	}
+	
+}

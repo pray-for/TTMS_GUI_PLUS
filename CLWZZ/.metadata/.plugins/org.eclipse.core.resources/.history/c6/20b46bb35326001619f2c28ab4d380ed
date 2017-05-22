@@ -1,0 +1,64 @@
+package com.xiyouliwp.fangweixin;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.SimpleAdapter;
+
+public class MainActivity extends Activity {
+	
+	private GridView gridView_poprecommend;
+    private Bitmap bmp;                               //导入临时图片
+    private ArrayList<HashMap<String, Object>> imageItem;
+    private SimpleAdapter simpleAdapter;     //适配器
+
+    public static List<String> xuanze = new ArrayList<String>();
+
+
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		
+		gridView_poprecommend = (GridView) findViewById(R.id.gridview_poprecommend);
+		
+		/*
+         * 载入默认图片添加图片加号
+         * 通过适配器实现
+         */
+         for (int i = 0;i<xuanze.size();i++) {
+             Bitmap addbmp = BitmapFactory.decodeFile(xuanze.get(i));
+             HashMap<String, Object> map = new HashMap<String, Object>();
+             map.put("itemImage", addbmp);
+             imageItem.add(map);
+         }
+         simpleAdapter = new SimpleAdapter(this,
+                 imageItem, R.layout.item_gridview_poprecommend,
+                 new String[]{"itemImage"}, new int[]{R.id.imageview_item_poprecommend});
+         simpleAdapter.setViewBinder(new SimpleAdapter.ViewBinder() {
+             @Override
+             public boolean setViewValue(View view, Object data,
+                                         String textRepresentation) {
+                 if(view instanceof ImageView & data instanceof Bitmap){
+                     ImageView iv = (ImageView) view;
+                     Bitmap bt = (Bitmap) data;
+                     iv.setImageBitmap(bt);
+                     return true;
+                 }
+                 return false;
+             }
+         });
+         gridView_poprecommend.setAdapter(simpleAdapter);
+		
+	}
+
+}

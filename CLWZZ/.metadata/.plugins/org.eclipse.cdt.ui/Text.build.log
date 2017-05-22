@@ -1,0 +1,11 @@
+
+**** Build of configuration Default for project Text ****
+
+sh ndk-build all 
+
+Cannot run program "sh": Launching failed
+Error: Program "ndk-build" is not found in PATH
+
+PATH=[C:\Program Files (x86)\Intel\TXE Components\TCS\;C:\Program Files\Intel\TXE Components\TCS\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Lenovo\Lenovo Home\;C:\Program Files\Java\jdk1.7.0_15\bin;C:\Program Files\Java\jdk1.7.0_15\jre\bin;D:\MySQL\MySQL Server 5.5\bin;D:\Android\adt-bundle-windows-x86_64-20131030\sdk\tools;D:\Android\adt-bundle-windows-x86_64-20131030\sdk\platform-tools;C:\Program Files (x86)\Tencent\QQ\Bin;D:\Program Files\Tencent\TGP]
+
+**** Build Finished ****

@@ -1,0 +1,320 @@
+package com.example.com.xiyouliwp.demo;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+import android.app.Activity;
+import android.content.Context;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.os.Parcelable;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+import com.example.com.xiyouliwp.demo.R;
+
+
+public class MainActivity extends Activity {
+
+	private MyViewPager viewpager;
+	private List<ImageView> imageViews; // 滑动图片的数组
+	private String[] titleStrings; // 滑动图片的标题
+	private int[] imagevierid; // 滑动图片的id;
+	private List<View> views; // 滑动原点的view
+	private int currentItem = 0; // 当前图片的索引号
+	private ScheduledExecutorService scheduledExecutorService;
+
+	private TextView textView_recommend_yuan;
+
+	private MyListView listView_recommend;
+	private ListView_Adapter list_adapter;
+	
+	private List<String> strings = new ArrayList<String>();
+	// 切换当前图片
+	private Handler handler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			// 显示当前图片
+			viewpager.setCurrentItem(currentItem);
+		}
+	};
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		findid();
+		
+		for (int i = 0; i < 8; i++) {
+			strings.add("数据demo"+i);
+		}
+
+		initViewpager();
+		initListview();
+	}
+
+	private void initViewpager() {
+        View header = LayoutInflater.from(MainActivity.this).inflate(
+                R.layout.myviewpager, null);
+        viewpager = (MyViewPager) header.
+                findViewById(R.id.viewpage_recommend);
+
+        imagevierid = new int[]{R.drawable.view1, R.drawable.view2, R.drawable.view3, R.drawable.viewtu
+                , R.drawable.view5};
+        titleStrings = new String[imagevierid.length];
+
+        titleStrings[0] = "宠物的再生圣地";
+        titleStrings[1] = "商店交易";
+        titleStrings[2] = "狗狗专属衣物";
+        titleStrings[3] = "萌宠秀翻天";
+        titleStrings[4] = "宠物人性化培训";
+
+        imageViews = new ArrayList<ImageView>();
+        //初始化图片资源
+        for (int i = 0; i < imagevierid.length; i++) {
+            ImageView imageView = new ImageView(MainActivity.this);
+            imageView.setBackgroundResource(imagevierid[i]);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            imageViews.add(imageView);
+        }
+
+        textView_recommend_yuan = (TextView) header.findViewById(R.id.textview_Viewpager);
+
+        //初始化原点
+        views = new ArrayList<View>();
+        views.add(header.findViewById(R.id.view_recommend_yuan1));
+        views.add(header.findViewById(R.id.view_recommend_yuan2));
+        views.add(header.findViewById(R.id.view_recommend_yuan3));
+        views.add(header.findViewById(R.id.view_recommend_yuan4));
+        views.add(header.findViewById(R.id.view_recommend_yuan5));
+        textView_recommend_yuan.setText(titleStrings[0]);
+
+        viewpager.setNestedpParent((ViewGroup) viewpager.getParent());
+
+        //Viewpager的adapter
+        // viewPager_recommend.setAdapter(new viewpagerecommendAdapter(getActivity()));
+
+
+        viewpagerecommendAdapter adapter = new viewpagerecommendAdapter(MainActivity.this);
+        viewpager.setAdapter(adapter);
+        viewpager.setOnPageChangeListener(new viewpagerRecommendPageChangeListener());
+
+        listView_recommend.addHeaderView(header);
+
+    }
+	
+
+    //viewpagger的PageChangeListener
+    private class viewpagerRecommendPageChangeListener implements ViewPager.OnPageChangeListener {
+
+        private int oldposition = 0;
+
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+
+            currentItem = position;
+            textView_recommend_yuan.setText(titleStrings[position]);
+            views.get(oldposition).setBackgroundResource(R.drawable.dot_normal);
+            views.get(position).setBackgroundResource(R.drawable.dot_focused);
+            oldposition = position;
+
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+
+        }
+    }
+	 //viewpager的aderpter
+
+    private class viewpagerecommendAdapter extends PagerAdapter {
+
+        private Context mContext;
+
+        public viewpagerecommendAdapter(Context mContext) {
+            this.mContext = mContext;
+
+        }
+
+        @Override
+        public int getCount() {
+            return imagevierid.length;
+        }
+
+        @Override
+        public Object instantiateItem(View container, int position) {
+            ((ViewPager) container).addView(imageViews.get(position));
+            return imageViews.get(position);
+        }
+
+        @Override
+        public void destroyItem(View container, int position, Object object) {
+            ((ViewPager) container).removeView((View) object);
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return view == object;
+        }
+
+        @Override
+        public void restoreState(Parcelable arg0, ClassLoader arg1) {
+
+        }
+
+        @Override
+        public Parcelable saveState() {
+            return null;
+        }
+
+        @Override
+        public void startUpdate(View arg0) {
+
+        }
+
+        @Override
+        public void finishUpdate(View arg0) {
+
+        }
+
+    }
+
+	public class ListView_Adapter extends BaseAdapter {
+
+		private List<String> userInfos; // 标题
+		private LayoutInflater layoutInflater = null;
+
+		public ListView_Adapter( List<String> strings) {
+			this.userInfos = strings;
+			layoutInflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+		}
+
+		@Override
+		public int getCount() {
+			return userInfos.size();
+		}
+
+		@Override
+		public Object getItem(int position) {
+			return userInfos.get(position);
+		}
+
+		@Override
+		public long getItemId(int position) {
+			return position;
+		}
+
+		@Override
+		public View getView(final int position, View convertView,
+				ViewGroup parent) {
+
+			ViewHolder holder;
+			if (convertView == null) {
+
+				holder = new ViewHolder();
+
+				convertView = layoutInflater.inflate(R.layout.item_mylistview,
+						null);
+				holder.textview = (TextView)convertView. findViewById(R.id.textview);
+
+				// 对item中的控件的id进行寻找
+				convertView.setTag(holder);
+			} else {
+				holder = (ViewHolder) convertView.getTag();
+
+				holder.textview.setText(userInfos.get(position));
+			}
+
+			return convertView;
+		}
+
+		class ViewHolder {
+			TextView textview;
+		}
+
+	}
+
+	private void initListview() {
+
+		list_adapter = new ListView_Adapter( strings);
+		listView_recommend.setAdapter(list_adapter);
+
+		listView_recommend
+				.setonRefreshListener(new MyListView.OnRefreshListener() {
+					@Override
+					public void onRefresh() {
+						new AsyncTask<Void, Void, Void>() {
+							protected Void doInBackground(Void... params) {
+								try {
+									Thread.sleep(2000);
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
+								return null;
+							}
+
+							@Override
+							protected void onPostExecute(Void result) {
+								list_adapter.notifyDataSetChanged();
+								listView_recommend.onRefreshComplete();
+							
+							}
+						}.execute();
+						
+					}
+				});
+
+	}
+
+
+	@Override
+	public void onStart() {
+		scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+		scheduledExecutorService.scheduleAtFixedRate(new YuanDianRun(), 1, 2,
+				TimeUnit.SECONDS);
+		super.onStart();
+	}
+
+	@Override
+	public void onStop() {
+		scheduledExecutorService.shutdown();
+		super.onStop();
+	}
+
+	private class YuanDianRun implements Runnable {
+
+		@Override
+		public void run() {
+			synchronized (viewpager) {
+				currentItem = (currentItem + 1) % imageViews.size();
+				// handler切换图片
+				handler.obtainMessage().sendToTarget();
+			}
+		}
+	}
+
+	// 寻找ID
+	private void findid() {
+
+		listView_recommend = (MyListView) findViewById(R.id.listview_recommend);
+	}
+
+	
+
+}

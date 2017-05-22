@@ -1,0 +1,43 @@
+import java.util.Scanner;
+
+
+/**
+ * 需求：将一堆正整数分为2组，要求2组的和相差最小。
+	例如：1 2 3 4 5，将1 2 4分为1组，3 5分为1组，两组和相差1，是所有方案中相差最少的。
+ * @author lwp940118
+ * 分析：分组只差最小，那么它小的哪一种的是总和，一定小于总和的一半
+ *
+ *	李文朋
+ */
+public class ZhengShuFenZu {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Scanner scanner = new Scanner(System.in);
+		int n = scanner.nextInt();
+		int sum = 0;
+		int[] arr = new int[n];
+		for (int i = 0; i < arr.length; i++) {
+			arr[i] = scanner.nextInt();
+			sum += arr[i];
+		}
+		
+		int[] dp = new int[sum/2+1];
+		for (int i = 0; i < dp.length; i++) {
+			dp[i] = 0;
+		}
+		int c = 0;
+		for (int i = 0; i < n; i++) {
+			for (int j = sum/2; j >= arr[i]; j--) {
+				dp[j] = Math.max(dp[j], dp[j - arr[i]]+arr[i]);
+				//System.out.printf("dp[%d] --> %d\n",j,dp[j]);
+				c++;
+			}
+		}
+		System.out.println(c);
+		
+		System.out.println(sum - dp[sum/2]*2);
+
+	}
+
+}

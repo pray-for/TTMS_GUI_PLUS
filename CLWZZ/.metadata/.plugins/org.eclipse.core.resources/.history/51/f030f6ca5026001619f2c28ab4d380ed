@@ -1,0 +1,60 @@
+package com.xiyouliwp.fangweixin;
+
+package com.example.xyliwp.ipet.utils;
+
+/**
+ * 需求：对手机中的图片进行扫描，直接显示在gridview上，并且在扫描结束后得到一个list，，list里面存的是所有包含
+ * 图片的文件夹
+ * Created by lwp940118 on 2016/5/29.
+ * 李文朋
+ */
+public class ImageFolder {
+
+    //文件夹的路径
+    private String folderPath;
+
+    //第一张图片的文件夹路径
+    private String firstImagePath;
+
+    //文件夹名称
+    private String folderName;
+
+    //图片的数量
+    private int imageCount = 0;
+
+    public int getImageCount() {
+        return imageCount;
+    }
+
+    public String getFirstImagePath() {
+        return firstImagePath;
+    }
+
+    public String getFolderName() {
+        return folderName;
+    }
+
+    public String getFolderPath() {
+        return folderPath;
+    }
+
+    public void setFirstImagePath(String firstImagePath) {
+        this.firstImagePath = firstImagePath;
+    }
+
+
+    public void setFolderPath(String folderPath) {
+        this.folderPath = folderPath;
+        //判断字符/它第一次出现的位置
+        int start = this.folderPath.lastIndexOf("/");
+        //得到从/第一次出现的位置开始  到该字符串结束的子串为folderName
+        this.folderName = this.folderPath.substring(start);
+    }
+
+    public void setImageCount(int imageCount) {
+        this.imageCount = imageCount;
+    }
+
+
+}
+
